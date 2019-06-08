@@ -26,10 +26,12 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-        prueba.cpp
+    rectangle.cpp
 
 HEADERS += \
-        prueba.h
+    rectangle.h \
+    list.h \
+    arraylist.h
 
 FORMS += \
         prueba.ui
