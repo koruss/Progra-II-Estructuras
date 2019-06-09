@@ -31,7 +31,8 @@ SOURCES += \
 HEADERS += \
     rectangle.h \
     list.h \
-    arraylist.h
+    arraylist.h \
+    vista.h
 
 FORMS += \
         prueba.ui
