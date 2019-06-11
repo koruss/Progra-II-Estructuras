@@ -26,13 +26,31 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-    rectangle.cpp
+    rectangle.cpp \
+    grafomatriz.cpp \
+    prim.cpp \
+    controlador.cpp \
+    kruskal.cpp \
+    puntosdearticulacion.cpp \
+    recorregrafo.cpp \
+    profundidad.cpp
 
 HEADERS += \
     rectangle.h \
     list.h \
     arraylist.h \
-    vista.h
+    vista.h \
+    dijkstra.h \
+    grafomatriz.h \
+    linkedlist.h \
+    node.h \
+    prim.h \
+    controlador.h \
+    kruskal.h \
+    puntosdearticulacion.h \
+    recorregrafo.h \
+    profundidad.h \
+    kvpair.h
 
 FORMS += \
         prueba.ui

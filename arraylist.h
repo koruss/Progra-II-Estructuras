@@ -12,7 +12,7 @@ template <typename E>
 
 class ArrayList : public List<E>{//herencia
 
-private:
+private://atributos
     E *elements;
     int max;
     int size;

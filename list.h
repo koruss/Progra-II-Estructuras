@@ -1,10 +1,10 @@
 #ifndef LIST_H
 #define LIST_H
 template <typename E>
-class List {
+class List {//CLASE ABSTRACTA
 private:
     void operator =(const List&) {}
-    List(const List& obj) {}
+    List(const List&) {}
 
 public:
     List() {}
