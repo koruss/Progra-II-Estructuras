@@ -5,6 +5,8 @@
 #include <QPen>
 
 
+
+
 class Rectangle:public QGraphicsRectItem
 {//Herencia de la clase QGraphicsRectItem
 
@@ -44,11 +46,13 @@ public:     //atributos de la clase
             this->setBrush(Qt::green);
         }
         else if(event->key() == Qt:: Key_Right){
-            Rectangle *cubito=this->right;
-            cubito->setBrush(Qt::yellow);
-            this->clearFocus();
-            cubito->setFocus();
-            this->setBrush(Qt::green);
+            if(getRight()!=NULL){
+                Rectangle *cubito=this->right;
+                cubito->setBrush(Qt::yellow);
+                this->clearFocus();
+                cubito->setFocus();
+                this->setBrush(Qt::green);
+            }
 
         }
         else if (event->key() == Qt:: Key_Down) {
@@ -72,10 +76,98 @@ public:     //atributos de la clase
 
     }
 
+/*
+ *                             _
+                         .-" `.
+                         ;:":  ""--..
+                .-+. ,gpd$L\:._      ""-._
+               /  //;$SS$$$$SS$$t--.      "-._
+             .'  `.//SS$P^"""TS$$S. "-.       "-,
+           .'    _ "-S^"      TS$$Sb   "-.       `.
+         .'    .':S$Y      _.. SS$$Sb-'   "-.      ;
+       .'    .'  SS$;,=-.  ._.`:S$$SS;       j     ;
+     .'    .'   :SS$$.-'        SS$$SS\     /     /
+   .'     /     SS$$S;    -     SS$$SS ;   /     /
+ .'      /   ._dSS$$SS   .--.  :SS$$$S\;  /     /
+/       /     :SS$$SS$b. `--'  $$SS$$S ) /     /
+\      :      ;SS$$SS$$SS.___.'$$SS$$Sb /     /
+ \      "-.   SS$$SS$$$SS      $$SS$$SS';    /
+  `.       "-dSS$$SS$$SS:;     :$$SSSP      /
+    `.              "^S^':     '^TSS'      /
+      "-.      `.     ::-.   _ .-"\\      /
+         "-.  -._\    ;;           \\  : :
+            "-.   \  ::             \\ ; ;
+               $.  `.;;       ,      \\;:
+              dS$\  / '-._    :  _.-"" \;
+           `-:S$^$t'      ""--:""       ;
+              TP :$$ ;        ::        :
+                d$S$_:        ;-\       ;
+               :$SS$; `.____.'   `.___.j
+               $$SS$$                  ;
+              / T$S$$;  ;      ;    ; :
+             :   `TS$$  :      :    : ;
+                   `T$         :     :
+                bug  ;         ;     ;
+                    /                ;
+                  .'                 :
+                 /      :           ;:
+                /       ;     c     ::
+               :`.      ;           : ;
+               ;  "-.   :           ; :
+              :_     "-.            .' ;
+              ; "-.     ""--..__..-"   :
+             :     `.                _.-;
+             ;       `.           .-"   ;
+             ;         `.       .'      ;
+             ;           \     /        :
+             ;            \   /         :
+             ;             \_/          :
+             ;             ::           :
+             ;             :;           ;
+             :             :;           ;
+              ;            ;;          :
+              |            ;;          |
+              :           : ;          ;
+               ;          : ;         :
+               :          ; :         |
+                ;         ; :         ;
+                :         ; :        :
+                 ;        ; :        |
+                 :        ; :        ;
+                  ;       : :       :
+                  : ;   : :  ;  ;   |
+                   ;:   ; ;  :  :   :
+                   : \    ;   \      "-.
+                   :      ;    \        \
+                   ;      :     \      .d$b
+                  db.___.d$b     \__.g$$$$$b
+                  $$$$$$$$$$     :$$$$$$$$$$b
+                  $$$$$$$$$$      T$$$$$$$$$$;
+                  :$$$$$$$$$       T$$$$$$$$$$
+                   $$$$$$$$$        `T$$$$$$$$b
+                   $$$$$$$$;          T$$$$$$$$;
+                   :$$$$$$$            T$$$$$$$$
+                   :$$$$$$$             T$$$$$$$;
+                    $$$$$$$              T$$$$$$$
+                    $$$$$$$               T$$$$$$;
+                    $$$$$$$                T$$$$$$
+                    :$$$$$;                 T$$$$$b
+                    :$$$$$;                  T$$$S$b.
+                    :$$$$S;                   SSS$$$$bp.
+                    :$$$$S;                   :S$$$$$S$$;
+                    $S$$SS;                    S$$$$$$SP
+                   :$SSSSS;                    :$$$$$$S
+                   $$$$$$$;                     $$$$$$$
+                   $$$$$$$$                     :$$SS$$
+                   $$$$$$$$                      SSS$$$
+                   $$$$$$$$                      :$$$$;
+                   :$$$$SS;                       `^^'
+                    TSSSSP
+                     `^^'
+*/
 
 
-
-
+ //GETTERS AND SETTERS
 
     void setUp(Rectangle* pUp){
         this->up=pUp;

@@ -70,7 +70,7 @@ public:
                 if(cubo->getRight()==NULL){
                     cout<<"entre"<<endl;
                     Rectangle* cuboNuevo= new Rectangle(cubo->getPosX()+20,cubo->getPosY());
-                    cuboNuevo->setBrush(Qt::blue);
+                    cuboNuevo->setBrush(Qt::green);
                     scene->addItem(cuboNuevo);
                     cubo->setRight(cuboNuevo);
                 }
@@ -127,6 +127,12 @@ public:
             x+=40;
             cont++;
         }
+    }
+
+    void crearPuntoInicial(){
+        lista->goToStart();
+        this->inicial=actual=lista->getElement();
+        inicial->setFocus();
     }
 
 

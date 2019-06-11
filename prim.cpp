@@ -29,14 +29,14 @@ int ArbolExpansionMinimo::arbolExpansionPrim(GrafoMatriz g, LinkedList<string> *
      for (int i = 0; i < n; i++){
          W[i] = false; // conjunto vacío
      }
-     W[0] = true; //se parte del vértice 0
+     W[rand()%n] = true; //se parte del vértice 0
      // inicialmente, coste[i] es la arista (0,i)
      for (int i = 1; i < n; i++)
      {
          coste[i] = g.Ovalor(0, i);
          masCerca[i] = 0;
      }
-     coste[0] = INFINITO;
+     coste[rand()%n] = INFINITO;
      for (int i = 1; i < n; i++)
      { // busca vértice z de V-W mas cercano,
        // de menor longitud de arista, a algún vértice de W
@@ -45,7 +45,7 @@ int ArbolExpansionMinimo::arbolExpansionPrim(GrafoMatriz g, LinkedList<string> *
          for (int j = 2; j < n; j++)
              if (coste[j] < menor)
              {
-                 menor = coste[j];
+                 menor = coste[rand()%n];
                  z = j;
              }
          longMin += menor;
