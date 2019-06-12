@@ -19,7 +19,9 @@ LinkedList<string> * crearPrim(){
     int numArcos=cargar.leerConexiones(vertice);
     ArbolExpansionMinimo prim(vertice);
     prim.arbolExpansionPrim(vertice, ListOfPrim);
+
     return ListOfPrim;
+
 }
 
 
@@ -65,7 +67,7 @@ LinkedList<string> *crearProfundidad(){
         cont++;
     }
 
-    prov->print();
+    //prov->print();
     return prov;
 }
 
@@ -86,30 +88,44 @@ int main(int argc, char *argv[])
 
     //agrego la vista
     QGraphicsView * view = new QGraphicsView(scene);
-    view->setFixedSize(1000,1000);//el tamanio
+    //view->setFixedSize(1000,1000);//el tamanio
     view->setBackgroundBrush(Qt::black);//el fondo
 
 
-    int size=9;// esta variable dice el tamanio del grafo, siempre son cuadrados
+    int size=5;// esta variable dice el tamanio del grafo, siempre son cuadrados
+
+
+
+
+
 
     elementos->crearGrafoInicial(size);//Crea el grafo matriz Inicial
 
     elementos->agregarEnEscena(scene);//mete los cuadritos en la
+
+
+
+
 
     LinkedList<string> *ListOfPrim=crearPrim();
     LinkedList<string> *ListOfKruskal=crearKruskal();
     LinkedList<string> *ListOfDepth=crearProfundidad();
     elementos->crearParedes(scene, ListOfPrim, size);// crea las paredecitas
 
-    elementos->crearPuntoInicial();
+    elementos->crearPuntoInicial(scene);
+
+
+
+//    Rectangle* personaje= new Rectangle(200,200);
+//    personaje->setFlag(QGraphicsItem::ItemIsFocusable);
+//    personaje->setFocus();
+//    personaje->setBrush(Qt::yellow);
+//    scene->addItem(personaje);
+
+//    elementos->lista->goToPos(250);
+//    Rectangle* personaje =elementos->
 
     view->show();
-
-
-
-
-
-
 
 
     return a.exec();

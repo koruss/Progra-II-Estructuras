@@ -6,8 +6,8 @@
 Controlador::Controlador(){}
 
 void Controlador::leerVertice(GrafoMatriz &g){
-    int largo=9;
-    int ancho=9;
+    int largo=5;
+    int ancho=5;
     int tamanno=largo*ancho;
 
     for(int i=1; i<=tamanno; i++){

@@ -19,14 +19,16 @@ public:     //atributos de la clase
     int posX=0;
     int posY=0;
 
+
     Rectangle(){//Constructor inicial
 
     }
+
     Rectangle(int posX,int posY){//Este constructor inicializa los atributos y establece el tamanio del rectangulo
         this->posX=posX;
         this->posY=posY;
         setRect(posX,posY,20,20);
-        setFlag(QGraphicsItem::ItemIsFocusable);
+        //setFlag(QGraphicsItem::ItemIsFocusable);
         this->up=NULL;
         this->down=NULL;
         this->right=NULL;
@@ -35,46 +37,97 @@ public:     //atributos de la clase
     }
 
 
+    Rectangle(int posX,int posY,int num){//Este constructor inicializa los atributos y establece el tamanio del rectangulo
+        this->posX=posX;
+        this->posY=posY;
+        setRect(posX,posY,20,20);
+        //setFlag(QGraphicsItem::ItemIsFocusable);
+        this->up=NULL;
+        this->down=NULL;
+        this->right=NULL;
+        this->left=NULL;
+        this->num=num;
+    }
 
+    Rectangle(int posX,int posY,Rectangle* actual){//Este constructor inicializa los atributos y establece el tamanio del rectangulo
+        this->posX=posX;
+        this->posY=posY;
+        setRect(posX,posY,20,20);
+        //setFlag(QGraphicsItem::ItemIsFocusable);
+        this->up=NULL;
+        this->down=NULL;
+        this->right=NULL;
+        this->left=NULL;
+    }
+
+    void setKeys(Rectangle *nActual){
+        setUp(nActual->getUp());
+        setDown(nActual->getDown());
+        setLeft(nActual->getLeft());
+        setRight(nActual->getRight());
+
+    }
+
+
+/*
     void keyPressEvent(QKeyEvent *event)//metodo para el manejo con los botones
     {
         if(event->key() == Qt::Key_Left){
-            Rectangle *cubito=this->left;
-            cubito->setBrush(Qt::yellow);
-            this->clearFocus();
-            cubito->setFocus();
-            this->setBrush(Qt::green);
+            if(actual->getLeft()!=NULL){
+                setPos(x()-20,y());
+                actual=actual->getLeft();
+                setFocus();
+
+
+            }
         }
         else if(event->key() == Qt:: Key_Right){
-            if(getRight()!=NULL){
-                Rectangle *cubito=this->right;
-                cubito->setBrush(Qt::yellow);
-                this->clearFocus();
-                cubito->setFocus();
-                this->setBrush(Qt::green);
+            if(actual->getRight()!=NULL){
+
+                //setKeys(getRight());
+
+                setPos(x()+20,y());
+                actual=actual->getRight();
+                setFocus();
+
+
             }
 
         }
         else if (event->key() == Qt:: Key_Down) {
-            Rectangle *cubito=this->down;
-            cubito->setBrush(Qt::yellow);
-            this->clearFocus();
-            cubito->setFocus();
-            this->setBrush(Qt::green);
+            if(actual->getDown()!=NULL){
+                //setKeys(getDown());
+                setPos(x(),y()+20);
+                actual=actual->getDown();
+                setFocus();
+
+
+
+            }
+
 
         }
 
         else if (event->key() == Qt:: Key_Up) {
-            Rectangle *cubito=this->up;
-            cubito->setBrush(Qt::yellow);
-            this->clearFocus();
-            cubito->setFocus();
-            this->setBrush(Qt::green);
+            if(getUp()!=NULL){
+
+                //setKeys(getUp());
+                setPos(x(),y()-20);
+                actual=actual->getUp();
+                setFocus();
+
+            }
+
 
         }
 
 
+
     }
+*/
+
+
+
 
 /*
  *                             _
