@@ -9,15 +9,15 @@
 #include "linkedlist.h"
 using namespace std;
 
-class Graph{
+class GrafoKruskal{
 private:
         int V,E;
-        vector<pair<int,pair<int,int> > > edges;
-        vector<pair<int,pair<int,int> > > MST;
+        vector<pair<int,pair<int,int> > > ejes;
+        vector<pair<int,pair<int,int> > > arbolExpMin;
 public:
-        Graph(int V,int E);
+        GrafoKruskal(int V,int E);
         void addEdge(int u,int v,int w);
-        int kruskalMST();
-        void printMST(GrafoMatriz, LinkedList<string> *);
+        int kruskal();
+        void print(GrafoMatriz, LinkedList<string> *);
 };
 #endif // KRUSKAL_H

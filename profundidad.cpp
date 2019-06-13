@@ -8,12 +8,14 @@
 GrapoProfundidad::GrapoProfundidad(int V)
 {
     this->V = V;
-    adj = new list<int>[V];
+//    adj = new list<int>[V];
+    adj=new LinkedList<int>;
 }
 
 void GrapoProfundidad::addEdge(int v, int w)
 {
-    adj[v].push_back(w);
+//    adj[v].push_back(w);
+      adj->appendMod(v, w);
 }
 
 void GrapoProfundidad::DFSUtil(int v, bool visited[], GrafoMatriz g, LinkedList<string> *listOfVerts)
@@ -29,25 +31,40 @@ void GrapoProfundidad::DFSUtil(int v, bool visited[], GrafoMatriz g, LinkedList<
     }
     listOfVerts->append(to_string(v));
 
-    // Recurren para todos los v√©rtices adyacentes
-    // a este v√©rtice
-    list<int>::iterator i;
+    // Recurren para todos los vÈrtices adyacentes
+    // a este vÈrtice
 
-    for (i = adj[v].begin(); i != adj[v].end(); ++i)
-        if (!visited[*i])
-            DFSUtil(*i, visited, g, listOfVerts);
+
+    int pos=adj->find(v);
+    adj->goToPos(pos);
+    int size=adj->getCurrent()->listaAdyacentes->getSize();
+
+    int cont=0;
+    while(cont<size){
+        int random=rand()%(size);
+        adj->getCurrent()->listaAdyacentes->goToPos(random);
+        int i=adj->getCurrent()->listaAdyacentes->getElement();
+        if(!visited[i]){
+            DFSUtil(i, visited, g, listOfVerts);
+            adj->getCurrent()->listaAdyacentes->remove();
+        }
+        size--;
+        cont++;
+    }
+
 }
 
-// Recorrido DFS de los v√©rtices accesibles desde v.
+// Recorrido DFS de los vÈrtices accesibles desde v.
 // Utiliza DFSUtil recursivo ()
 void GrapoProfundidad::DFS(int v, GrafoMatriz g, LinkedList<string> *listOfVerts)
 {
-    // Marca todos los v√©rtices como no visitados.
+    // Marca todos los vÈrtices como no visitados.
     bool *visited = new bool[V];
     for (int i = 0; i < V; i++)
         visited[i] = false;
 
-    // Llamar a la funci√≥n de ayuda recursiva.
+
+    // Llamar a la funciÛn de ayuda recursiva.
     // para imprimir el recorrido DFS
     DFSUtil(v, visited, g, listOfVerts);
     cout<<endl;

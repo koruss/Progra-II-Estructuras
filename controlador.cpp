@@ -5,9 +5,9 @@
 
 Controlador::Controlador(){}
 
-void Controlador::leerVertice(GrafoMatriz &g){
-    int largo=5;
-    int ancho=5;
+void Controlador::leerVertice(GrafoMatriz &g, int num){
+    int largo=num;
+    int ancho=num;
     int tamanno=largo*ancho;
 
     for(int i=1; i<=tamanno; i++){
@@ -75,12 +75,12 @@ void Controlador::introducirConexiones(string texto, GrafoMatriz &g){
             }
 
     }
-    int pesoNumero=atoi(peso.c_str());
+    int pesoNumero=rand()%5;
     g.nuevoArco(salida, llegada, pesoNumero);
     g.nuevoArco(salida2, llegada2, pesoNumero);
 }
 
-void Controlador::leerKruskal(Graph &g, int numVerts){
+void Controlador::leerKruskal(GrafoKruskal &g, int numVerts){
     int limit=sqrt(numVerts);
     for(int i=1; i<numVerts; i++){
         if(i%limit!=0){
@@ -101,7 +101,7 @@ void Controlador::leerKruskal(Graph &g, int numVerts){
     }
 }
 
-void Controlador::introducirKruskal(string texto, Graph &g){
+void Controlador::introducirKruskal(string texto, GrafoKruskal &g){
     int cambiarVariable=0;
     string salida="";
     string llegada="";
@@ -124,7 +124,7 @@ void Controlador::introducirKruskal(string texto, Graph &g){
 
     int sal=atoi(salida.c_str());
     int lleg=atoi(llegada.c_str());
-    int pesoNumero=atoi(peso.c_str());
+    int pesoNumero=rand()%9;
     g.addEdge(sal, lleg, pesoNumero);
 }
 

@@ -193,6 +193,41 @@ public:
         return is;
     }
 
+    int find(E element){
+        for(goToStart();!atEnd();next()){
+            if(element==getElement()){
+                return getPos();
+            }
+        }
+    }
+
+    void appendMod(E element, E element2){
+        if(!contains(element)){
+            tail->next=new Node<E>(element);
+            tail=tail->next;
+            tail->listaAdyacentes->append(element2);
+            size++;
+        }else{
+            int pos=find(element);
+            goToPos(pos);
+            current->appendList(element2);
+        }
+
+
+
+    }
+
+
+    Node<E> *getCurrent()
+    {
+        return current;
+    }
+
+    void setCurrent(Node<E> *value)
+    {
+        current = value;
+    }
+
 };
 
 

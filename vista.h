@@ -6,7 +6,7 @@
 #include "arraylist.h"
 #include "linkedlist.h"
 #include <cstdlib>
-#include "personaje.h"
+
 
 
 
@@ -124,8 +124,98 @@ public:
         }
     }
 
+    void crearParedesExtra(int size,QGraphicsScene* scene){
+        int valor=(size*size)*0.05;
+        cout<<valor<<endl;
 
-    void crearGrafoInicial(int size){
+        while(valor>0){
+            int num=size+(rand()%(lista->getSize()-size));
+            int alea=rand()%4;
+            if(num>(size*size)||num<size){
+                alea==1;
+            }
+            cout<<num<<endl;
+
+            lista->goToPos(num);
+            Rectangle* cuadrito=lista->getElement();
+
+            if(alea==0){//izq
+                if(cuadrito->getLeft()==NULL){
+                    if(num%size!=0){
+                        lista->goToPos(num-1);
+                        Rectangle* cuadrito2=lista->getElement();
+
+                        Rectangle* paredcita=new Rectangle(cuadrito->getPosX()-20,cuadrito->getPosY());
+                        paredcita->setBrush(Qt::green);
+                        cuadrito->setLeft(paredcita);
+                        paredcita->setRight(cuadrito);
+                        cuadrito2->setRight(paredcita);
+                        paredcita->setLeft(cuadrito2);
+                        scene->addItem(paredcita);
+                    }
+                }
+
+
+            }
+            else if (alea==1) {//der
+                if(cuadrito->getRight()==NULL){
+                    if((num+1)%size!=0){
+                        lista->goToPos(num+1);
+                        Rectangle* cuadrito2=lista->getElement();
+                        Rectangle* paredcita=new Rectangle(cuadrito->getPosX()+20,cuadrito->getPosY());
+                        paredcita->setBrush(Qt::green);
+                        cuadrito->setRight(paredcita);
+                        paredcita->setLeft(cuadrito);
+                        paredcita->setRight(cuadrito2);
+                        cuadrito2->setLeft(paredcita);
+                        scene->addItem(paredcita);
+
+                    }
+
+
+                }
+
+
+            }
+            else if (alea==2) {//up
+                if(cuadrito->getUp()==NULL){
+                    if(num>size){
+                     lista->goToPos(num-size);
+                     Rectangle* cuadrito2=lista->getElement();
+                     Rectangle* paredcita=new Rectangle(cuadrito->getPosX(),cuadrito->getPosY()-20);
+                     paredcita->setBrush(Qt::green);
+                     cuadrito->setUp(paredcita);
+                     paredcita->setDown(cuadrito);
+                     cuadrito2->setDown(paredcita);
+                     paredcita->setUp(cuadrito2);
+                     scene->addItem(paredcita);
+                    }
+                }
+
+            }
+            else if (alea==3) {//down
+                if(cuadrito->getDown()==NULL){
+                    if(num<((size*size)-size)){
+                    lista->goToPos(num+size);
+                    Rectangle* cuadrito2=lista->getElement();
+                    Rectangle* paredcita=new Rectangle(cuadrito->getPosX(),cuadrito->getPosY()-20);
+                    paredcita->setBrush(Qt::green);
+                    cuadrito->setDown(paredcita);
+                    paredcita->setUp(cuadrito);
+                    cuadrito2->setUp(paredcita);
+                    paredcita->setDown(cuadrito2);
+                    scene->addItem(paredcita);
+                    }
+
+                }
+
+
+            }
+    valor--;
+        }
+    }
+
+     ArrayList<Rectangle*> *crearGrafoInicial(int size){
         int x= 20;
         int y= 20;
         int cont=0;
@@ -141,18 +231,32 @@ public:
             x+=40;
             cont++;
         }
+        return lista;
     }
 
-    void crearPuntoInicial(QGraphicsScene* scene){
-        int pos=0;
+
+
+
+    void crearManzanitas(){
+            int cantMan = 3;
+            int pos;
+            while(cantMan>0){
+                int pos = rand()%(lista->getSize()-1);
+                lista->goToPos(pos);
+                Rectangle* manzanita = lista->getElement();
+                manzanita->setManzanita(true);
+                manzanita->setBrush(Qt::red);
+                cantMan--;
+            }
+    }
+
+    void crearFinal(int size){
+        int pos =(size*size/2) +rand()%(size*size/2);
+        Rectangle* manzanita = lista->getElement();
         lista->goToPos(pos);
-        actual=lista->getElement();
-        //Personaje *puntito=new Personaje(actual->getPosX(),actual->getPosY(),pos,lista);
-        Personaje *puntito=new Personaje(actual->getPosX(),actual->getPosY(),pos,lista,actual);
-        puntito->setFlag(QGraphicsItem::ItemIsFocusable);
-        puntito->setFocus();
-        puntito->setBrush(Qt::blue);
-        scene->addItem(puntito);
+        Rectangle* final = lista->getElement();
+        final->setIsFinal(true);
+        final->setBrush(Qt::yellow);
 
     }
 

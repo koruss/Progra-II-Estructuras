@@ -15,13 +15,13 @@ class Controlador
 public:
     Controlador();
 
-    void leerVertice(GrafoMatriz &g);
+    void leerVertice(GrafoMatriz &g,int size);
     void introducirVertice(string, GrafoMatriz &g);
 
     int leerConexiones(GrafoMatriz &);
     void introducirConexiones(string, GrafoMatriz &);
-    void leerKruskal(Graph &, int);
-    void introducirKruskal(string, Graph &);
+    void leerKruskal(GrafoKruskal &, int);
+    void introducirKruskal(string, GrafoKruskal &);
     void leerArticulacion(GrafoArticulacion &);
     void introducirArticulacion(string, GrafoArticulacion &);
     void leerProfundidad(GrapoProfundidad &, int);

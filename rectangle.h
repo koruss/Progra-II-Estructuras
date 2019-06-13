@@ -18,6 +18,8 @@ public:     //atributos de la clase
     Rectangle *right;
     int posX=0;
     int posY=0;
+    bool isManzanita;
+    bool isFinal;
 
 
     Rectangle(){//Constructor inicial
@@ -33,32 +35,13 @@ public:     //atributos de la clase
         this->down=NULL;
         this->right=NULL;
         this->left=NULL;
+        this->isManzanita=false;
+        this->isFinal=false;
 
     }
 
 
-    Rectangle(int posX,int posY,int num){//Este constructor inicializa los atributos y establece el tamanio del rectangulo
-        this->posX=posX;
-        this->posY=posY;
-        setRect(posX,posY,20,20);
-        //setFlag(QGraphicsItem::ItemIsFocusable);
-        this->up=NULL;
-        this->down=NULL;
-        this->right=NULL;
-        this->left=NULL;
-        this->num=num;
-    }
 
-    Rectangle(int posX,int posY,Rectangle* actual){//Este constructor inicializa los atributos y establece el tamanio del rectangulo
-        this->posX=posX;
-        this->posY=posY;
-        setRect(posX,posY,20,20);
-        //setFlag(QGraphicsItem::ItemIsFocusable);
-        this->up=NULL;
-        this->down=NULL;
-        this->right=NULL;
-        this->left=NULL;
-    }
 
     void setKeys(Rectangle *nActual){
         setUp(nActual->getUp());
@@ -69,62 +52,7 @@ public:     //atributos de la clase
     }
 
 
-/*
-    void keyPressEvent(QKeyEvent *event)//metodo para el manejo con los botones
-    {
-        if(event->key() == Qt::Key_Left){
-            if(actual->getLeft()!=NULL){
-                setPos(x()-20,y());
-                actual=actual->getLeft();
-                setFocus();
 
-
-            }
-        }
-        else if(event->key() == Qt:: Key_Right){
-            if(actual->getRight()!=NULL){
-
-                //setKeys(getRight());
-
-                setPos(x()+20,y());
-                actual=actual->getRight();
-                setFocus();
-
-
-            }
-
-        }
-        else if (event->key() == Qt:: Key_Down) {
-            if(actual->getDown()!=NULL){
-                //setKeys(getDown());
-                setPos(x(),y()+20);
-                actual=actual->getDown();
-                setFocus();
-
-
-
-            }
-
-
-        }
-
-        else if (event->key() == Qt:: Key_Up) {
-            if(getUp()!=NULL){
-
-                //setKeys(getUp());
-                setPos(x(),y()-20);
-                actual=actual->getUp();
-                setFocus();
-
-            }
-
-
-        }
-
-
-
-    }
-*/
 
 
 
@@ -221,6 +149,12 @@ public:     //atributos de la clase
 
 
  //GETTERS AND SETTERS
+    bool getManzanita(){
+            return isManzanita;
+        }
+    void setManzanita(bool manzanita){
+            this->isManzanita = manzanita;
+        }
 
     void setUp(Rectangle* pUp){
         this->up=pUp;
@@ -274,6 +208,13 @@ public:     //atributos de la clase
     void setPosY(int value)
     {
         posY = value;
+    }
+    void setIsFinal(bool valor){
+        this->isFinal=valor;
+    }
+
+    bool getIsFinal(){
+        return isFinal;
     }
 
 };

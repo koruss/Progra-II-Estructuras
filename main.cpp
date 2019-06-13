@@ -8,13 +8,14 @@
 #include "grafomatriz.h"
 #include "controlador.h"
 #include <time.h>
+#include "personaje.h"
 
 
-LinkedList<string> * crearPrim(){
+LinkedList<string> * crearPrim(int size){
     Controlador cargar;
     GrafoMatriz vertice;
     LinkedList<string> *ListOfPrim=new LinkedList<string>();
-    cargar.leerVertice(vertice);
+    cargar.leerVertice(vertice,size);
     int V = vertice.numVerts;
     int numArcos=cargar.leerConexiones(vertice);
     ArbolExpansionMinimo prim(vertice);
@@ -25,30 +26,30 @@ LinkedList<string> * crearPrim(){
 }
 
 
-LinkedList<string> *crearKruskal(){
+LinkedList<string> *crearKruskal(int size){
     LinkedList<string> *ListOfKruskal=new LinkedList<string>();
     GrafoMatriz vertice;
     Controlador cargar;
 
-    cargar.leerVertice(vertice);
+    cargar.leerVertice(vertice,size);
     int V = vertice.numVerts;
     int numArcos=cargar.leerConexiones(vertice);
     int E = numArcos;
 
-    Graph g(V,E);
+    GrafoKruskal g(V,E);
     cargar.leerKruskal(g, V);
-    g.kruskalMST();
-    g.printMST(vertice, ListOfKruskal);
+    g.kruskal();
+    g.print(vertice, ListOfKruskal);
     //ListOfKruskal->print();
     return ListOfKruskal;
 }
 
-LinkedList<string> *crearProfundidad(){
+LinkedList<string> *crearProfundidad(int size){
     LinkedList<string> *ListOfDepth=new LinkedList<string>();
     GrafoMatriz vertice;
     Controlador cargar;
 
-    cargar.leerVertice(vertice);
+    cargar.leerVertice(vertice,size);
     int V = vertice.numVerts;
     int numArcos=cargar.leerConexiones(vertice);
     GrapoProfundidad gp(numArcos);
@@ -71,6 +72,47 @@ LinkedList<string> *crearProfundidad(){
     return prov;
 }
 
+void crearPuntoInicial(QGraphicsScene* scene,ArrayList<Rectangle*> *lista, vista *vista){
+    int pos=0;
+    lista->goToPos(pos);
+    vista->actual=lista->getElement();
+    Personaje *puntito=new Personaje(vista->actual->getPosX(),vista->actual->getPosY(),pos,lista,vista->actual);
+    puntito->setFlag(QGraphicsItem::ItemIsFocusable);
+    puntito->setFocus();
+    puntito->setBrush(Qt::blue);
+    scene->addItem(puntito);
+
+}
+
+
+void game(int size){
+
+    //cosas de los grafos :)
+    vista *elementos = new vista();
+
+    //creo una escena, como niño en supermercado
+    QGraphicsScene * scene = new QGraphicsScene();
+    //agrego la vista
+    QGraphicsView * view = new QGraphicsView(scene);
+    view->setFixedSize(1000,1000);//el tamanio
+    view->setBackgroundBrush(Qt::black);//el fondo
+    //int size=20;// esta variable dice el tamanio del grafo, siempre son cuadrados
+    ArrayList<Rectangle*> *listaNodos=elementos->crearGrafoInicial(size);//Crea el grafo matriz Inicial
+    elementos->crearManzanitas();
+    elementos->crearFinal(size);
+    elementos->agregarEnEscena(scene);//mete los cuadritos en la
+    LinkedList<string> *ListOfPrim=crearPrim( size);
+    LinkedList<string> *ListOfKruskal=crearKruskal(size);
+    //  LinkedList<string> *ListOfDepth=crearProfundidad(size);
+
+    elementos->crearParedes(scene, ListOfKruskal, size);// crea las paredecitas
+    crearPuntoInicial(scene,listaNodos,elementos);
+    elementos->crearParedesExtra(size,scene);
+    view->show();
+}
+
+
+
 int main(int argc, char *argv[])
     {
     srand(time(NULL));
@@ -78,55 +120,34 @@ int main(int argc, char *argv[])
     //creo la estructura
 
     QApplication a(argc, argv);
-
-
+    for(int num=20;num>0;num-=5){
+        game(num);
+    }
     //cosas de los grafos :)
-    vista *elementos = new vista();
+    //    vista *elementos = new vista();
 
-    //creo una escena, como niño en supermercado
-    QGraphicsScene * scene = new QGraphicsScene();
+    //        //creo una escena, como niño en supermercado
+    //        QGraphicsScene * scene = new QGraphicsScene();
+    //        //agrego la vista
+    //        QGraphicsView * view = new QGraphicsView(scene);
+    //        view->setFixedSize(1000,1000);//el tamanio
+    //        view->setBackgroundBrush(Qt::black);//el fondo
+    //        int size=20;// esta variable dice el tamanio del grafo, siempre son cuadrados
+    //        ArrayList<Rectangle*> *listaNodos=elementos->crearGrafoInicial(size);//Crea el grafo matriz Inicial
+    //        elementos->crearManzanitas();
+    //        elementos->crearFinal(size);
+    //        elementos->agregarEnEscena(scene);//mete los cuadritos en la
+    //        LinkedList<string> *ListOfPrim=crearPrim( size);
+    //        LinkedList<string> *ListOfKruskal=crearKruskal(size);
+    //    //  LinkedList<string> *ListOfDepth=crearProfundidad(size);
 
-    //agrego la vista
-    QGraphicsView * view = new QGraphicsView(scene);
-    //view->setFixedSize(1000,1000);//el tamanio
-    view->setBackgroundBrush(Qt::black);//el fondo
-
-
-    int size=5;// esta variable dice el tamanio del grafo, siempre son cuadrados
-
-
-
-
-
-
-    elementos->crearGrafoInicial(size);//Crea el grafo matriz Inicial
-
-    elementos->agregarEnEscena(scene);//mete los cuadritos en la
-
-
-
-
-
-    LinkedList<string> *ListOfPrim=crearPrim();
-    LinkedList<string> *ListOfKruskal=crearKruskal();
-    LinkedList<string> *ListOfDepth=crearProfundidad();
-    elementos->crearParedes(scene, ListOfPrim, size);// crea las paredecitas
-
-    elementos->crearPuntoInicial(scene);
+    //        elementos->crearParedes(scene, ListOfKruskal, size);// crea las paredecitas
+    //        crearPuntoInicial(scene,listaNodos,elementos);
+    //        elementos->crearParedesExtra(size,scene);
+    //        view->show();
+        return a.exec();
+    }
 
 
 
-//    Rectangle* personaje= new Rectangle(200,200);
-//    personaje->setFlag(QGraphicsItem::ItemIsFocusable);
-//    personaje->setFocus();
-//    personaje->setBrush(Qt::yellow);
-//    scene->addItem(personaje);
 
-//    elementos->lista->goToPos(250);
-//    Rectangle* personaje =elementos->
-
-    view->show();
-
-
-    return a.exec();
-}

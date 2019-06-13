@@ -1,94 +1,99 @@
 #include "kruskal.h"
 #include "linkedlist.h"
 
-Graph::Graph(int V,int E){
+GrafoKruskal::GrafoKruskal(int V,int E){
     this->V = V;
     this->E = E;
 }
-void Graph::addEdge(int u,int v,int w){
-    edges.push_back({w,{u,v}});
+void GrafoKruskal::addEdge(int salida,int llegada,int peso){
+    ejes.push_back({peso,{salida,llegada}});
 }
 
-void Graph::printMST(GrafoMatriz grafo, LinkedList<string> *listOfVerts){
+void GrafoKruskal::print(GrafoMatriz grafo, LinkedList<string> *listOfVerts){
     string a;
     string b;
 
-    vector<pair<int,pair<int,int> > >::iterator it;
-    for(it = MST.begin();it!=MST.end();it++){
+    vector<pair<int,pair<int,int> > >::iterator position;
+    for(position = arbolExpMin.begin();position!=arbolExpMin.end();position++){
 
         for (int i=0; i<V+1; i++){
-           if (grafo.verts[i].numVertice==it->second.first ){
+           if (grafo.verts[i].numVertice==position->second.first ){
                  a=grafo.verts[i].nombre;
            }
        }
 
        for (int e=0; e<V+1; e++){
-           if (grafo.verts[e].numVertice==it->second.second ){
+           if (grafo.verts[e].numVertice==position->second.second ){
                  b=grafo.verts[e].nombre;
            }
        }
-//       cout << it->second.first << " - " << it->second.second << endl;
-       listOfVerts->append(to_string(it->second.first)+"-"+to_string(it->second.second));
-       listOfVerts->append(to_string(it->second.second)+"-"+to_string(it->second.first));
+       listOfVerts->append(to_string(position->second.first)+"-"+to_string(position->second.second));
+       listOfVerts->append(to_string(position->second.second)+"-"+to_string(position->second.first));
     }
 }
-struct DisjointSet{
-    int *parent,*rnk;
+
+struct conjDisjuntos{
+    int *padre;
+    int *rank;
     int n;
 
-    DisjointSet(int n){
+    conjDisjuntos(int n){
         this->n = n;
-        parent = new int[n+1];
-        rnk = new int[n+1];
+        padre = new int[n+1];
+        rank = new int[n+1];
 
         for(int i=0;i<=n;i++){
-            rnk[i] = 0;
-            parent[i] = i;
+            rank[i] = 0;
+            padre[i] = i;
         }
     }
+
     int Find(int u){
-        if(u == parent[u]) return parent[u];
-        else return Find(parent[u]);
+        if(u == padre[u]){
+            return padre[u];
+        }else {
+            return Find(padre[u]);
+        }
     }
 
     void Union(int x,int y){
         x = Find(x);
         y = Find(y);
         if(x != y){
-            if(rnk[x] < rnk[y]){
-                rnk[y] += rnk[x];
-                parent[x] = y;
+            if(rank[x] < rank[y]){
+                rank[y] += rank[x];
+                padre[x] = y;
             }
             else{
-                rnk[x] += rnk[y];
-                parent[y] = x;
+                rank[x] += rank[y];
+                padre[y] = x;
             }
         }
     }
 };
 
-int Graph::kruskalMST(){
-    int MSTWeight = 0;
-    sort(edges.begin(),edges.end());
-    DisjointSet ds(this->V);
+int GrafoKruskal::kruskal(){
+    int peso = 0;
+    sort(ejes.begin(),ejes.end());
+    conjDisjuntos conjDisj(this->V);
 
-    vector<pair<int,pair<int,int> > >::iterator it;
+    vector<pair<int,pair<int,int> > >::iterator position;
     // para todos los ejes en G
-    for(it = edges.begin(); it!=edges.end();it++){
-        int u = it->second.first;
-        int v = it->second.second;
+    for(position = ejes.begin(); position!=ejes.end();position++){
+        int u = position->second.first;
+        int v = position->second.second;
 
-        int setU = ds.Find(u);
-        int setV = ds.Find(v);
+        int setU = conjDisj.Find(u);
+        int setV = conjDisj.Find(v);
 
 
         if(setU != setV){
-            int w = it->first;
-            MST.push_back({w,{u,v}});
-            MSTWeight += it->first;
+            int w = position->first;
+            arbolExpMin.push_back({w,{u,v}});
+            peso += position->first;
 
-            ds.Union(setU,setV);
+            conjDisj.Union(setU,setV);
         }
     }
-    return MSTWeight;
+    return peso;
 }

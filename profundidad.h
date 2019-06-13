@@ -17,8 +17,7 @@ class GrapoProfundidad
 
     // Puntero a una matriz que contiene
     // listas de adyacencia
-    list<int> *adj;
-//    List<int> *adj;
+    LinkedList<int> *adj;
 
     // Una función recursiva utilizada por DFS
     void DFSUtil(int v, bool visited[], GrafoMatriz g, LinkedList<string> *);

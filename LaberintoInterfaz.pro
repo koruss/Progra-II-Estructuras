@@ -33,7 +33,9 @@ SOURCES += \
     kruskal.cpp \
     puntosdearticulacion.cpp \
     recorregrafo.cpp \
-    profundidad.cpp
+    profundidad.cpp \
+    dijkstra.cpp \
+    timer.cpp
 
 HEADERS += \
     rectangle.h \
@@ -51,7 +53,9 @@ HEADERS += \
     recorregrafo.h \
     profundidad.h \
     kvpair.h \
-    personaje.h
+    personaje.h \
+    timer.h \
+    padre.h
 
 FORMS += \
         prueba.ui
