@@ -52,10 +52,8 @@ HEADERS += \
     puntosdearticulacion.h \
     recorregrafo.h \
     profundidad.h \
-    kvpair.h \
     personaje.h \
-    timer.h \
-    padre.h
+    timer.h
 
 FORMS += \
         prueba.ui

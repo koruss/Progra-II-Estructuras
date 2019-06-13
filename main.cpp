@@ -85,31 +85,31 @@ void crearPuntoInicial(QGraphicsScene* scene,ArrayList<Rectangle*> *lista, vista
 }
 
 
-void game(int size){
+//void game(int size){
 
-    //cosas de los grafos :)
-    vista *elementos = new vista();
+//    //cosas de los grafos :)
+//    vista *elementos = new vista();
 
-    //creo una escena, como niño en supermercado
-    QGraphicsScene * scene = new QGraphicsScene();
-    //agrego la vista
-    QGraphicsView * view = new QGraphicsView(scene);
-    view->setFixedSize(1000,1000);//el tamanio
-    view->setBackgroundBrush(Qt::black);//el fondo
-    //int size=20;// esta variable dice el tamanio del grafo, siempre son cuadrados
-    ArrayList<Rectangle*> *listaNodos=elementos->crearGrafoInicial(size);//Crea el grafo matriz Inicial
-    elementos->crearManzanitas();
-    elementos->crearFinal(size);
-    elementos->agregarEnEscena(scene);//mete los cuadritos en la
-    LinkedList<string> *ListOfPrim=crearPrim( size);
-    LinkedList<string> *ListOfKruskal=crearKruskal(size);
-    //  LinkedList<string> *ListOfDepth=crearProfundidad(size);
+//    //creo una escena, como niño en supermercado
+//    QGraphicsScene * scene = new QGraphicsScene();
+//    //agrego la vista
+//    QGraphicsView * view = new QGraphicsView(scene);
+//    view->setFixedSize(1000,1000);//el tamanio
+//    view->setBackgroundBrush(Qt::black);//el fondo
+//    //int size=20;// esta variable dice el tamanio del grafo, siempre son cuadrados
+//    ArrayList<Rectangle*> *listaNodos=elementos->crearGrafoInicial(size);//Crea el grafo matriz Inicial
+//    elementos->crearManzanitas();
+//    elementos->crearFinal(size);
+//    elementos->agregarEnEscena(scene);//mete los cuadritos en la
+//    LinkedList<string> *ListOfPrim=crearPrim( size);
+//    LinkedList<string> *ListOfKruskal=crearKruskal(size);
+//    //  LinkedList<string> *ListOfDepth=crearProfundidad(size);
 
-    elementos->crearParedes(scene, ListOfKruskal, size);// crea las paredecitas
-    crearPuntoInicial(scene,listaNodos,elementos);
-    elementos->crearParedesExtra(size,scene);
-    view->show();
-}
+//    elementos->crearParedes(scene, ListOfKruskal, size);// crea las paredecitas
+//    elementos->crearParedesExtra(size,scene);
+//    crearPuntoInicial(scene,listaNodos,elementos);
+//}
+
 
 
 
@@ -120,9 +120,26 @@ int main(int argc, char *argv[])
     //creo la estructura
 
     QApplication a(argc, argv);
-    for(int num=20;num>0;num-=5){
-        game(num);
-    }
+
+
+
+
+//    for(int num=5;num>0;num5){
+//        LinkedList<string> *ListOfPrim=crearPrim( num);
+//        LinkedList<string> *ListOfKruskal=crearKruskal(num);
+//        vista *juego=new vista();
+
+//        juego->crearJuego(num,ListOfPrim);
+//    }
+
+
+    int size=15;
+    LinkedList<string> *ListOfPrim=crearPrim(size);
+    vista* juego=new vista();
+    juego->crearJuego(size,ListOfPrim);
+
+
+
     //cosas de los grafos :)
     //    vista *elementos = new vista();
 
@@ -144,7 +161,7 @@ int main(int argc, char *argv[])
     //        elementos->crearParedes(scene, ListOfKruskal, size);// crea las paredecitas
     //        crearPuntoInicial(scene,listaNodos,elementos);
     //        elementos->crearParedesExtra(size,scene);
-    //        view->show();
+            //view->show();
         return a.exec();
     }
 

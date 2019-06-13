@@ -10,7 +10,7 @@
 class Rectangle:public QGraphicsRectItem
 {//Herencia de la clase QGraphicsRectItem
 
-public:     //atributos de la clase
+private:     //atributos de la clase
     int num;
     Rectangle *up;
     Rectangle *down;
@@ -21,7 +21,7 @@ public:     //atributos de la clase
     bool isManzanita;
     bool isFinal;
 
-
+public:
     Rectangle(){//Constructor inicial
 
     }
