@@ -11,7 +11,7 @@ class Rectangle:public QGraphicsRectItem
 {//Herencia de la clase QGraphicsRectItem
 
 private:     //atributos de la clase
-    int num;
+
     Rectangle *up;
     Rectangle *down;
     Rectangle *left;
@@ -22,12 +22,14 @@ private:     //atributos de la clase
     bool isFinal;
 
 public:
+    int num;
     Rectangle(){//Constructor inicial
 
     }
 
     Rectangle(int posX,int posY){//Este constructor inicializa los atributos y establece el tamanio del rectangulo
         this->posX=posX;
+        this->num=0;
         this->posY=posY;
         setRect(posX,posY,20,20);
         //setFlag(QGraphicsItem::ItemIsFocusable);
@@ -217,6 +219,15 @@ public:
         return isFinal;
     }
 
+    int getNum()
+    {
+        return num;
+    }
+
+    void setNum(int value)
+    {
+        num = value;
+    }
 };
 
 #endif // RECTANGLE_H

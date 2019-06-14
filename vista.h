@@ -2,285 +2,321 @@
 #define VISTA_H
 #include <QGraphicsView>
 #include <QGraphicsScene>
-#include "rectangle.h"
-#include "arraylist.h"
-#include "linkedlist.h"
-#include "personaje.h"
+//#include "rectangle.h"
+//#include "personaje.h"
+//#include "arraylist.h"
+//#include "linkedlist.h"
+//#include "prim.h"
+//#include "controlador.h"
+//#include "grafomatriz.h"
+#include "laberinto.h"
+#include "mythread.h"
+#include "mytimer.h"
+#include <QMediaPlayer>
+#include <QThread>
+#include <QImage>
+#include <QDialog>
+#include <QInputDialog>
+#include "leaderBoard.h"
 #include <cstdlib>
+
+extern int score;
+
 class vista: public QGraphicsView{
- /*
+
+  /*
   *
   *                              ESTA ES LA CLASE QUE MANEJA EL JUEGO, AQUI ES DONDE SE CREAN TODAS LAS COSAS NECESARIAS PARA EL JUEGO
   *
-  * */
+  */
 
 
 public:
-    Rectangle *actual;
-    Rectangle *final;
-    Rectangle *inicial;
-    ArrayList<Rectangle*> *lista;
+
     QGraphicsScene *scene;
+    QGraphicsScene *scene2;
+    Laberinto *laberinto;
+    int tamanio;
+    int dificultad = 0;
+    QMediaPlayer *sonidito;
+
+    MyTimer *cronito;
+    LeaderBoard *leaderBoard;
+    int playtime = 100;
 
 
-    vista(QWidget *parent=NULL){
-        setFixedSize(1000,1000);
-        setBackgroundBrush(Qt::black);
-        lista=new ArrayList<Rectangle*>;
+
+
+    vista(int tam){
+
+
+        setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+        this->tamanio=tam;
+        this->leaderBoard=new LeaderBoard();
+        //setFixedSize(1000,1000);
+        setBackgroundBrush(QBrush(QImage(":/images/background.png")/*scaled(1000,1000)*/));
         scene=new QGraphicsScene();
+        //scene2=new QGraphicsScene();
         //scene->setSceneRect(0,0,1000,1000);
+//        scene2->setSceneRect(500,0,1000,1000);
         setScene(scene);
-        this->actual=NULL;
-        this->final=NULL;
-        this->inicial=NULL;
+
+//        setScene(scene2);
+
+        this->laberinto=new Laberinto(scene,tamanio);
+        //setWindowTitle(laberinto->tipoLaberinto);
+
+        this->sonidito = new QMediaPlayer();
+        this->sonidito->setMedia(QUrl("qrc:/sounds/codecopen.wav"));
+
+        //inicializar el thread
+//        QThread *mThread = new QThread;
+//        mThread->start();
+//                //crear un timer
+//                MyTimer *mTimer = new MyTimer();
+//                //conectarlo al thread
+//                //mTimer->moveToThread(this);
+        this->cronito=new MyTimer();
+
+
+
+
+        //inicializar el thread
+        //QThread *mThread = new QThread;
+        //mThread->start();
+        //crear un timer
+       // MyTimer *mTimer = new MyTimer(QGraphicsTextItem timeScreen);
+        //conectarlo al thread
+        //mTimer->moveToThread(mThread);
+
+
+        //scene->addText(s);
+//        QGraphicsTextItem *timeScreen = scene->addText(s);
+//        timeScreen->setPos(50, 50);
     }
 
 
-    void agregarEnEscena(){
-        for(lista->goToStart();!lista->atEnd();lista->next()){
-            scene->addItem(lista->getElement());
-        }
-    }
-
-    /*
-     * ESTE METODO complementario del metodoCrearParedes
-     * */
-private:
-
-    ArrayList<int>* obtenerNumeros(string linea){
-        string x;
-        ArrayList<int> *lista=new ArrayList<int>();
-        for(unsigned int i=0; i<linea.size();i++){
-            char letra=linea[i];
-            if(letra=='-'){
-                lista->append(std::stoi(x));
-                x="";
-            }
-            else{
-                x=x+=letra;
-            }
-        }
-        lista->append(std::stoi(x));
-        return lista;
-    }
-
-public:
-    /*
-     * ESTE METODO CREA LAS UNIONES O PAREDES ENTRE LOS NODOS DEL GRAFO
-     *
-     */
-    void crearParedes(LinkedList<string>* arcos, int size){
-        ArrayList<int> *listita=new ArrayList<int>();
-        for(arcos->goToStart();!arcos->atEnd();arcos->next()){
-            string linea =arcos->getElement();
-            listita=obtenerNumeros(linea);
-            int num1=listita->getElement();
-            listita->next();
-            int num2=listita->getElement();// lista es la que tiene todos los nodos     //num1 es el de partida y num2 el de llegada
-            lista->goToPos(num1-1);
-            Rectangle* cubo=lista->getElement();// cubo es nodo de la lista
-            lista->goToPos(num2-1);
-            Rectangle* cubo2=lista->getElement();
-            if(num1==num2-1){//significa que num2 es el siguiente en la lista o sea el de la derecha
-                if(cubo->getRight()==NULL){
-                    Rectangle* cuboNuevo= new Rectangle(cubo->getPosX()+20,cubo->getPosY());//cuboNuevo= a la pared o arco
-                    cuboNuevo->setBrush(Qt::green);
-                    cubo->setRight(cuboNuevo);
-                    cuboNuevo->setLeft(cubo);
-                    cubo2->setLeft(cuboNuevo);
-                    cuboNuevo->setRight(cubo2);
-                    scene->addItem(cuboNuevo);
-                }
-            }
-            else if (num1+1==num2) {//significa que num2 es el anterior en la lista o sea el de la izquierda
-                if(cubo->getLeft()==NULL){
-                    Rectangle* cuboNuevo= new Rectangle(cubo->getPosX()-20,cubo->getPosY());
-                    scene->addItem(cuboNuevo);
-                    cuboNuevo->setBrush(Qt::green);
-                    cubo->setLeft(cuboNuevo);
-                    cubo2->setRight(cuboNuevo);
-                    cuboNuevo->setLeft(cubo2);
-                    cuboNuevo->setRight(cubo);
-                }
-            }
-            else if (num1+size==num2){//significa que num2 esta abajo en la lista
-                if(cubo->getDown()==NULL){
-                    Rectangle* cuboNuevo= new Rectangle(cubo->getPosX(),cubo->getPosY()+20);
-                    scene->addItem(cuboNuevo);
-                    cuboNuevo->setBrush(Qt::green);
-                    cubo->setDown(cuboNuevo);
-                    cuboNuevo->setUp(cubo);
-                    cubo2->setUp(cuboNuevo);
-                    cuboNuevo->setDown(cubo2);
-                }
-            }
-            else if(num1-size==num2){//significa que num2 esta arriba en la lista
-
-                if(cubo->getUp()==NULL){
-                    Rectangle* cuboNuevo= new Rectangle(cubo->getPosX(),cubo->getPosY()-20);
-                    scene->addItem(cuboNuevo);
-                    cuboNuevo->setBrush(Qt::green);
-                    cubo->setUp(cuboNuevo);
-                    cuboNuevo->setDown(cubo);
-                    cuboNuevo->setUp(cubo2);
-                    cubo2->setDown(cuboNuevo);
-                }
-
-            }
-
-        }
-    }
 
 
-    void crearParedesExtra(int size){
-        int valor=(size*size)*0.05;
-        while(valor>0){
-            int num=size+(rand()%(lista->getSize()-size));//ESTE ES EL NUMERO ALEATORIO PARA ESCOGER EL NODO DE LA LISTA
-            int alea=rand()%4;//ESTE NUMERO ALEATORIO SE USA PARA ESCOGER LA POSICION ARRIBA,ABAJO,IZQ,DER a ASIGNAR
-//            if(num>(size*size)||num<size){
-//                alea=1;
-//            }
-            lista->goToPos(num);
-            Rectangle* cuadrito=lista->getElement();
 
-            if(alea==0){//Asginar a la izquierda del nodo escogido
-                if(cuadrito->getLeft()==NULL){
-                    if(num%size!=0){
-                        lista->goToPos(num-1);
-                        Rectangle* cuadrito2=lista->getElement();
 
-                        Rectangle* paredcita=new Rectangle(cuadrito->getPosX()-20,cuadrito->getPosY());
-                        paredcita->setBrush(Qt::green);
-                        cuadrito->setLeft(paredcita);
-                        paredcita->setRight(cuadrito);
-                        cuadrito2->setRight(paredcita);
-                        paredcita->setLeft(cuadrito2);
-                        scene->addItem(paredcita);
+//    void crearTimer(){
+//        //inicializar el thread
+//        QThread *mThread = new QThread;
+//        mThread->start();
+//        //crear un timer
+//        MyTimer *mTimer = new MyTimer();
+//        //conectarlo al thread
+//        mTimer->moveToThread(mThread);
+//    }
+
+
+    void keyPressEvent(QKeyEvent *event)//metodo para el manejo con los botones
+        {
+            if(event->key() == Qt::Key_Left){
+                if(laberinto->actual->getLeft()!=NULL){
+                    laberinto->personaje->setPos(laberinto->personaje->x()-20,laberinto->personaje->y());
+                    laberinto->setActual(laberinto->actual->getLeft());
+
+                    if(laberinto->getActual()->getManzanita()){
+                           laberinto->getActual()->setManzanita(false);
+                           laberinto->manzanitas--;
+                           //playSoundEffect();
+                           sonidito->play();                           
+                           cronito->modifyTime(5);
+                           laberinto->destruirManzanita(laberinto->getActual()->getPosX(),laberinto->getActual()->getPosY());
+
                     }
-                }
-            }
-            else if (alea==1) {//a la derecha del nodo escogido
-                if(cuadrito->getRight()==NULL){
-                    if((num+1)%size!=0){
-                        lista->goToPos(num+1);
-                        Rectangle* cuadrito2=lista->getElement();
-                        Rectangle* paredcita=new Rectangle(cuadrito->getPosX()+20,cuadrito->getPosY());
-                        paredcita->setBrush(Qt::green);
-                        cuadrito->setRight(paredcita);
-                        paredcita->setLeft(cuadrito);
-                        paredcita->setRight(cuadrito2);
-                        cuadrito2->setLeft(paredcita);
-                        scene->addItem(paredcita);
+
+                    if(laberinto->getActual()->getIsFinal()&&laberinto->manzanitas==0){
+                        close();
+                        scene->clear();
+                        //scene->addItem(timeScreen);
+                        this->laberinto=new Laberinto(scene,tamanio+=2);
+                        cronito->modifyTime(15);
+                        score+=10;
+                        dificultad++;
+                        evaluarDificultad(dificultad);
+                        //laberinto->destruirMeta();
+                        show();
+
+
+
                     }
                 }
             }
 
-            else if (alea==2) {//arriba del nodo escogido
-                if(cuadrito->getUp()==NULL){
-                    if(num>size){
-                         lista->goToPos(num-size);
-                         Rectangle* cuadrito2=lista->getElement();
-                         Rectangle* paredcita=new Rectangle(cuadrito->getPosX(),cuadrito->getPosY()-20);
-                         paredcita->setBrush(Qt::green);
-                         cuadrito->setUp(paredcita);
-                         paredcita->setDown(cuadrito);
-                         cuadrito2->setDown(paredcita);
-                         paredcita->setUp(cuadrito2);
-                         scene->addItem(paredcita);
+            else if(event->key() == Qt:: Key_Right){
+
+                if(laberinto->actual->getRight()!=NULL){
+                    laberinto->personaje->setPos(laberinto->personaje->x()+20,laberinto->personaje->y());
+                    laberinto->setActual(laberinto->getActual()->getRight());
+
+
+                    if(laberinto->getActual()->getManzanita()){
+                           laberinto->getActual()->setManzanita(false);
+                           //laberinto->getActual()->setBrush(Qt::green);
+                           laberinto->manzanitas--;
+                           //playSoundEffect();
+                           sonidito->play();
+                           cronito->modifyTime(5);
+                           laberinto->destruirManzanita(laberinto->getActual()->getPosX(),laberinto->getActual()->getPosY());
+                    }
+                    if(laberinto->getActual()->getIsFinal()&& laberinto->manzanitas==0){
+                        close();
+                        this->scene->clear();
+                        //scene->addItem(timeScreen);
+                        this->laberinto=new Laberinto(scene,tamanio+=2);
+                        cronito->modifyTime(15);
+                        score+=10;
+                        dificultad++;
+                        evaluarDificultad(dificultad);
+                        //laberinto->destruirMeta();
+                        show();
+
+
                     }
                 }
             }
-            else if (alea==3) {//
-                if(cuadrito->getDown()==NULL){
-                    if(num<((size*size)-size)){
-                        lista->goToPos(num+size);
-                        Rectangle* cuadrito2=lista->getElement();
-                        Rectangle* paredcita=new Rectangle(cuadrito->getPosX(),cuadrito->getPosY()-20);
-                        paredcita->setBrush(Qt::green);
-                        cuadrito->setDown(paredcita);
-                        paredcita->setUp(cuadrito);
-                         cuadrito2->setUp(paredcita);
-                        paredcita->setDown(cuadrito2);
-                        scene->addItem(paredcita);
+
+            else if (event->key() == Qt:: Key_Down) {
+                if(laberinto->getActual()->getDown()!=NULL){
+
+                    laberinto->personaje->setPos(laberinto->personaje->x(),laberinto->personaje->y()+20);
+                    laberinto->setActual(laberinto->getActual()->getDown());
+
+
+                    if(laberinto->getActual()->getManzanita()){
+                           laberinto->getActual()->setManzanita(false);
+                           //laberinto->getActual()->setBrush(Qt::green);
+                           laberinto->manzanitas--;
+                           //playSoundEffect();
+                           sonidito->play();
+                           cronito->modifyTime(5);
+                           laberinto->destruirManzanita(laberinto->getActual()->getPosX(),laberinto->getActual()->getPosY());
+                    }
+                    if(laberinto->getActual()->getIsFinal()&&laberinto->manzanitas==0){
+                        close();
+                        this->scene->clear();
+                        //scene->addItem(timeScreen);
+                        this->laberinto=new Laberinto(scene,tamanio+=2);
+                        cronito->modifyTime(15);
+                        score+=10;
+                        dificultad++;
+                        evaluarDificultad(dificultad);
+                        //laberinto->destruirMeta();
+                        show();
+
                     }
                 }
             }
-    valor--;
+
+            else if (event->key() == Qt:: Key_Up) {
+                if(laberinto->getActual()->getUp()!=NULL){
+                    laberinto->personaje->setPos(laberinto->personaje->x(),laberinto->personaje->y()-20);
+                    laberinto->setActual(laberinto->getActual()->getUp());
+
+
+                    if(laberinto->getActual()->getManzanita()){
+                           laberinto->getActual()->setManzanita(false);
+                           //laberinto->getActual()->setBrush(Qt::green);
+                           laberinto->manzanitas--;
+                           //playSoundEffect();
+                           sonidito->play();
+                           cronito->modifyTime(5);
+                           laberinto->destruirManzanita(laberinto->getActual()->getPosX(),laberinto->getActual()->getPosY());
+                    }
+                    if(laberinto->getActual()->getIsFinal()&&laberinto->manzanitas==0){
+                        close();
+                        this->scene->clear();
+                        //scene->addItem(timeScreen);
+                        this->laberinto=new Laberinto(scene,tamanio+=2);
+                        cronito->modifyTime(15);
+                        score+=10;
+                        dificultad++;
+                        evaluarDificultad(dificultad);
+                        //laberinto->destruirMeta();
+                        show();
+
+                    }
+                }
+            }
+            else if(event->key()==Qt::Key_H){
+                //laberinto->dibujarCamino(sqrt(laberinto->lista->getSize()));
+            }
+    }
+
+    int evaluarDificultad(int dificultad){
+        if(dificultad<3){
+            cronito->modifyTime(10);
+        }
+        else if(dificultad<5 && dificultad>2){
+            cronito->modifyTime(12);
+        }
+        else if(dificultad<7 && dificultad>4){
+            cronito->modifyTime(15);
+        }
+        else if(dificultad>6){
+            cronito->modifyTime(18);
         }
     }
 
-     ArrayList<Rectangle*> *crearGrafoInicial(int size){
-        int x= 20;
-        int y= 20;
-        int cont=0;
-        for(int i=0;i<size*size;i++){
-            if(cont==size){
-                y=y+40;
-                x=20;
-                cont=0;
+    void pantallaFinal(){
+        setFixedSize(1500,1000);
+        setBackgroundBrush(QBrush(QImage(":/images/gameOver.jpg")/*.scaled(1000,1000)*/));
+        scene=new QGraphicsScene();
+        scene->setSceneRect(0,0,1500,1000);
+        QGraphicsTextItem *textito=new QGraphicsTextItem();
+        QString texto="Te has quedado sin tiempo.\n\n";
+        texto.append("Score: ");
+        texto.append(QString::number(score));
+        textito->setPlainText(texto);
+        textito->setDefaultTextColor(Qt::white);
+        textito->setFont(QFont("times",24));
+        textito->setPos(500,300);
+        scene->addItem(textito);
+        setScene(scene);
+        QString leader=recibirNombre();
+
+
+    }
+
+    QString recibirNombre(){
+        bool ok;
+        QString text = QInputDialog::getText(this, tr("QInputDialog::getText()"),
+                                                 tr("User name:"), QLineEdit::Normal,
+                                                 QDir::home().dirName(), &ok);
+            if (ok && !text.isEmpty())
+                return text;
+                //textLabel->setText(text);
+    }
+
+
+
+
+
+    void playSoundEffect(){
+        if(sonidito->state()==QMediaPlayer::PlayingState){
+            sonidito->setPosition(0);
             }
-            Rectangle *rect= new Rectangle(x,y);
-            rect->setBrush(Qt::green);
-            this->lista->append(rect);
-            x+=40;
-            cont++;
+        else if(sonidito->state()==QMediaPlayer::StoppedState){
+            sonidito->play();
+            }
         }
-        return lista;
-    }
 
+signals:
 
-    void crearManzanitas(){
-            int cantMan = 3;
-            while(cantMan>0){
-                int pos = rand()%(lista->getSize()-1);
-                lista->goToPos(pos);
-                Rectangle* manzanita = lista->getElement();
-                manzanita->setManzanita(true);
-                manzanita->setBrush(Qt::red);
-                cantMan--;
-            }
-    }
-
-
-    void crearFinal(int size){
-        int pos =(size*size/2) +rand()%(size*size/2);
-        lista->goToPos(pos);
-        Rectangle* final = lista->getElement();
-        final->setIsFinal(true);
-        final->setBrush(Qt::yellow);
-    }
-
-
-    void crearPuntoInicial(){
-        int pos=0;
-        lista->goToPos(pos);
-        actual=lista->getElement();
-        Personaje *puntito=new Personaje(actual->getPosX(),actual->getPosY(),pos,lista,actual);
-        puntito->setFlag(QGraphicsItem::ItemIsFocusable);
-        puntito->setFocus();
-        puntito->setBrush(Qt::blue);
-        scene->addItem(puntito);
-    }
-
-    void mostrar(){
-        show();
-    }
-
-
-    void crearJuego(int size,LinkedList<string> *lista){
-
-        crearGrafoInicial(size);
-        crearManzanitas();
-        crearFinal(size);
-        agregarEnEscena();
-        crearParedes(lista,size);
-        crearParedesExtra(size);
-        crearPuntoInicial();
-        mostrar();
-    }
-
-
-
+/*public slots:
+    void MySlot()
+    {
+       //qDebug()<<"Time left: "<<playtime;
+       //QGraphicsScene *scene;
+       QString s = QString::number(playtime);
+       QGraphicsTextItem *timeScreen = scene->addText(s);
+       timeScreen->setPos(50, 50);
+       playtime--;
+    }*/
 
 
 };

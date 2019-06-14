@@ -4,7 +4,8 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui \
+         multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -26,6 +27,8 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
+    mythread.cpp \
+    mytimer.cpp \
     rectangle.cpp \
     grafomatriz.cpp \
     prim.cpp \
@@ -38,6 +41,12 @@ SOURCES += \
     timer.cpp
 
 HEADERS += \
+    laberinto.h \
+    leaderboard.h \
+    manzanita.h \
+    meta.h \
+    mythread.h \
+    mytimer.h \
     rectangle.h \
     list.h \
     arraylist.h \
@@ -62,3 +71,6 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    resources.qrc

@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/sounds">
+        <file>bgsound.mp3</file>
+        <file>codecopen.wav</file>
+    </qresource>
+    <qresource prefix="/images">
+        <file>background.png</file>
+        <file>compita.png</file>
+        <file>gameOver.jpg</file>
+        <file>spaceCowboy.png</file>
+        <file>bateria.png</file>
+        <file>meta.png</file>
+    </qresource>
+</RCC>

@@ -134,6 +134,14 @@ public:
         return false;
 
     }
+    int find(E element){
+        for(int c=0;c<size;c++){
+            if(elements[c]==element){
+                 return c;
+             }
+            return  -1;
+        }
+    }
 
     int indexOf(E element){
         for(int c=0;c<size;c++){

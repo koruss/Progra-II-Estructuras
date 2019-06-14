@@ -3,6 +3,7 @@
 #include "grafomatriz.h"
 #include "fstream"
 #include "iostream"
+#include "linkedlist.h"
 
 class CaminoMinimo
 {
@@ -16,7 +17,7 @@ class CaminoMinimo
      public:
          CaminoMinimo (GrafoMatriz g, int origen); // constructor
          void Dijkstra(GrafoMatriz g, int origen); // dijkstra
-         void recuperaCamino(int v, GrafoMatriz g);
+         void recuperaCamino(int v, GrafoMatriz g,  LinkedList<string> *);
          int * OdistanciaMinima();
          int *Oultimo();
      private:

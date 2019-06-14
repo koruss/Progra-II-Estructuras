@@ -80,6 +80,47 @@ void Controlador::introducirConexiones(string texto, GrafoMatriz &g){
     g.nuevoArco(salida2, llegada2, pesoNumero);
 }
 
+int Controlador::leerConexionesDijkstra(GrafoMatriz &gDij, LinkedList<string> *grafo){
+    int numVerts=gDij.numVerts;
+    int cont=0;
+    for(grafo->goToStart(); !grafo->atEnd(); grafo->next()){
+        string texto;
+        texto=grafo->getElement();
+        introducirConexionesDijkstra(texto, gDij);
+    }
+
+    return cont;
+}
+
+void Controlador::introducirConexionesDijkstra(string texto, GrafoMatriz &gDij){
+    int cambiarVariable=0;
+    string salida="";
+    string salida2="";
+    string llegada="";
+    string llegada2="";
+    string peso="";
+
+    for(unsigned int i=0; i<texto.size(); i++){
+            if(texto[i]!=';'){
+                   if(cambiarVariable==0){
+                        salida=salida+texto[i];
+                        llegada2=llegada2+texto[i];
+                   }else if (cambiarVariable==1){
+                        llegada=llegada+texto[i];
+                        salida2=salida2+texto[i];
+                   }else{
+                       peso=peso+texto[i];
+                   }
+            }else{
+                cambiarVariable=cambiarVariable+1;
+            }
+
+    }
+    int pesoNumero=atoi (peso.c_str());
+    gDij.nuevoArco(salida, llegada, pesoNumero);
+    gDij.nuevoArco(salida2, llegada2, pesoNumero);
+}
+
 void Controlador::leerKruskal(GrafoKruskal &g, int numVerts){
     int limit=sqrt(numVerts);
     for(int i=1; i<numVerts; i++){

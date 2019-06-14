@@ -9,7 +9,7 @@ void GrafoKruskal::addEdge(int salida,int llegada,int peso){
     ejes.push_back({peso,{salida,llegada}});
 }
 
-void GrafoKruskal::print(GrafoMatriz grafo, LinkedList<string> *listOfVerts){
+void GrafoKruskal::print(GrafoMatriz grafo, LinkedList<string> *listOfVerts, LinkedList<string> *listToDijkstra){
     string a;
     string b;
 
@@ -29,6 +29,7 @@ void GrafoKruskal::print(GrafoMatriz grafo, LinkedList<string> *listOfVerts){
        }
        listOfVerts->append(to_string(position->second.first)+"-"+to_string(position->second.second));
        listOfVerts->append(to_string(position->second.second)+"-"+to_string(position->second.first));
+       listToDijkstra->append(to_string(position->second.first)+";"+to_string(position->second.second)+";"+to_string(position->first));
     }
 }
 

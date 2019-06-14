@@ -18,6 +18,6 @@ public:
         GrafoKruskal(int V,int E);
         void addEdge(int u,int v,int w);
         int kruskal();
-        void print(GrafoMatriz, LinkedList<string> *);
+        void print(GrafoMatriz, LinkedList<string> *, LinkedList<string> *);
 };
 #endif // KRUSKAL_H

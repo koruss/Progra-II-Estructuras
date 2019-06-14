@@ -17,11 +17,9 @@ ArbolExpansionMinimo::ArbolExpansionMinimo(GrafoMatriz g)
      }
 }
 
-int ArbolExpansionMinimo::arbolExpansionPrim(GrafoMatriz g, LinkedList<string> *listOfVerts)
-{
+int ArbolExpansionMinimo::arbolExpansionPrim(GrafoMatriz g, LinkedList<string> *listOfVerts, LinkedList<string> *listToDijkstra){
      string a;
      string b;
-
      int menor;
      int *coste = new int [n];
      int *masCerca = new int [n];
@@ -61,8 +59,12 @@ int ArbolExpansionMinimo::arbolExpansionPrim(GrafoMatriz g, LinkedList<string> *
                    b=g.verts[i].nombre;
              }
          }
+
+         string c=to_string(menor);
+
          listOfVerts->append(b+"-"+a);
          listOfVerts->append(a+"-"+b);
+         listToDijkstra->append(b+";"+a+";"+c);
 
          W[z] = true; // vértice z se añade al conjunto W
          matrizadyacencia[masCerca[z]][z] = matrizadyacencia[z][masCerca[z]] = coste[z];

@@ -17,7 +17,7 @@ class ArbolExpansionMinimo
          int ** OT(){ return matrizadyacencia;} // Arbol de expansión
          int OlongMin(){ return longMin;} // peso del Árbol expansión
          ArbolExpansionMinimo(GrafoMatriz g); // constructor
-         int arbolExpansionPrim(GrafoMatriz g, LinkedList<string> *); // algoritmo de Prim
+         int arbolExpansionPrim(GrafoMatriz g, LinkedList<string> *,  LinkedList<string> *); // algoritmo de Prim
 
 };
 

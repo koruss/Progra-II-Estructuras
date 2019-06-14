@@ -66,22 +66,24 @@ int CaminoMinimo::minimo( bool F[])
      return v;
 }
 
-void CaminoMinimo::recuperaCamino(int v, GrafoMatriz g)
+void CaminoMinimo::recuperaCamino(int v, GrafoMatriz g,  LinkedList<string> *ListOfDijkstra)
 {
      int anterior = ultimo[v];
      if (v != s)
      {
-         recuperaCamino(anterior, g); // vuelve al último del último
+         recuperaCamino(anterior, g, ListOfDijkstra); // vuelve al último del último
          for (int i=0; i<n; i++){
              if (g.verts[i].numVertice==v){
-                   cout << g.verts[i].nombre << " V <--"<<endl;
+//                   cout << g.verts[i].nombre << " V <--"<<endl;
+                 ListOfDijkstra->append(g.verts[i].nombre);
              }
          }
      }
      else
          for (int i=0; i<n; i++){
              if (g.verts[i].numVertice==s){
-                   cout << g.verts[i].nombre << " V <--"<<endl;
+//                   cout << g.verts[i].nombre << " V <--"<<endl;
+                 ListOfDijkstra->append(g.verts[i].nombre);
              }
          }
 }

@@ -20,6 +20,8 @@ public:
 
     int leerConexiones(GrafoMatriz &);
     void introducirConexiones(string, GrafoMatriz &);
+    int leerConexionesDijkstra(GrafoMatriz &gDij, LinkedList<string> *);
+    void introducirConexionesDijkstra(string, GrafoMatriz &gDij);
     void leerKruskal(GrafoKruskal &, int);
     void introducirKruskal(string, GrafoKruskal &);
     void leerArticulacion(GrafoArticulacion &);
